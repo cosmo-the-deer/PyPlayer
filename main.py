@@ -66,9 +66,12 @@ def play_song(song_path):
     pygame.mixer.music.play()   
 
 def main():
+    global current_song, playlist, playing
     while True:
-        global current_song, playlist
         
+        
+        pygame.event.pump()
+
         command = non_blocking_input()
 
         if playing:
@@ -90,7 +93,9 @@ def main():
             case ["unpause"]:
                 pygame.mixer.music.unpause()
             case ["stop"]:
+                playing = False
                 pygame.mixer.music.stop()
+                pygame.event.clear()
             case ["quit"]:
                 pygame.mixer.quit()
                 print("Goodbye")
@@ -98,13 +103,17 @@ def main():
                 clear()
                 quit()
             case ["next"]:
-                current_song += 1
+                current_song = (current_song + 1) % len(playlist)
                 play_song(playlist[current_song])
             case ["play", num] if num.isdigit():
-                current_song = int(num)
-                play_song(playlist[current_song])
+                index = int(num) - 1
+                if 0 <= index < len(playlist):
+                    current_song = index
+                    play_song(playlist[current_song])
+                else:
+                    print(Fore.RED + f"Track number {num} out of range." + Fore.RESET)
             case ["prev"]:
-                current_song -= 1
+                current_song = (current_song - 1) % len(playlist)
                 play_song(playlist[current_song])
             case ["help"]:
                 pass
