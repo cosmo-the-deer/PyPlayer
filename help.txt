@@ -1,0 +1,44 @@
+play:
+    Starts the current playlist and or song
+
+pause:
+    Pause the currently playing
+
+stop:
+    Stops the currently playing song
+
+quit:
+    Exits the program
+
+next:
+    Goes to the next song in the play list
+
+prev:
+    Goes to the prevoirus song in the play list
+
+loop:
+    Sets the playlist to loop and unloop
+
+info:
+    Prints info.txt
+
+shuffle:
+    Sets the playlist to shuffle and unshuffle
+
+trueshuffle:
+    Sets the playlist to constanly shuffle
+
+current:
+    Prints info about the current song
+
+licence:
+    prints LICENSE
+
+credits:
+    Prints credits.txt
+
+help:
+    Prints this menu.
+
+setdir:
+    Sets the directory of the playlist.
