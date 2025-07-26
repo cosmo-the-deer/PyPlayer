@@ -16,6 +16,7 @@ def get_audio_files(folder_path):
         if f.lower().endswith(audio_extensions) and os.path.isfile(os.path.join(folder_path, f))
     ]
 
+current_volume = 100
 current_song = 0
 library_path = "library"
 playlist = get_audio_files(library_path)
@@ -66,9 +67,9 @@ def play_song(song_path):
     pygame.mixer.music.play()   
 
 def main():
-    global current_song, playlist, playing
+    global current_song, playlist, playing, current_volume
     while True:
-        
+        current_volume = max(min(current_volume, 100), 0)
         
         pygame.event.pump()
 
@@ -86,6 +87,12 @@ def main():
         print()
 
         match command:
+            case ["dev", "info"]:
+                print("current song index: " + Fore.CYAN + str(current_song) + Fore.RESET)
+                print("Playlist: " + Fore.CYAN + str(playlist) + Fore.RESET)
+                print("is currently playing: " + Fore.CYAN + str(playing) + Fore.RESET)
+                print("current volume: " + Fore.CYAN + str(current_volume) + Fore.RESET)
+
             case ["play"]:
                 play_song(playlist[current_song])
             case ["pause"]:
@@ -131,13 +138,14 @@ def main():
                 print("Album:", tag.album)
                 print("Length: ", tag.duration)
             case ["playlist"]:
-                n = 0
-                for i in playlist:
-                    n += 1
-                    print(str(n) + " " + i)
+                for i, song_path in enumerate(playlist, start=1):
+                    print(f"{i} {song_path}")
+            case ["volume", num] if num.isdigit():
+                current_volume = int(num)
+                pygame.mixer.music.set_volume(current_volume / 100)
+                print(Fore.GREEN + "current volume: " + Fore.RESET + str(current_volume))
             case _:
                 print(Fore.RED + list_to_str(command) + Fore.RESET + " is not a valid command")
-
         print()
 
 initialize()
